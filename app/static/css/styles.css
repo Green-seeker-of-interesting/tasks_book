@@ -1,0 +1,49 @@
+.block_content {
+    /* background-color: lawngreen; */
+    text-align: center;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.menu_item {
+    display: inline;
+    /* background-color: blue; */
+    padding: 1em;
+    border: solid;
+    border-color: black;
+    margin: 1px;
+}
+
+.top_menu{
+    list-style: none; 
+    margin: 0; 
+    padding-left: 0; 
+}
+
+a {
+    text-decoration: none;
+    font-family: 'Lora', serif;
+}
+
+ul :hover{
+    background-color: darksalmon;
+}
+
+nav {
+    display: block;
+    width: 660px;
+    margin: 0 0 30px;
+    font-size: 20px;
+}
+
+.form-contact label {
+    display: inline-block; 
+    min-width: 120px;
+}
+
+.form-contact p {
+    margin: 10px 0 10px 0;
+}
+.form-contact input[type=submit], textarea {
+    font-size: 16px;
+}
