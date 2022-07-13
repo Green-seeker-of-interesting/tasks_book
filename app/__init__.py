@@ -13,3 +13,4 @@ db = SQLAlchemy(app)
 
 from . import views
 from . import models
+from . import forms

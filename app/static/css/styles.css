@@ -1,3 +1,4 @@
+
 .block_content {
     /* background-color: lawngreen; */
     text-align: center;
@@ -25,7 +26,7 @@ a {
     font-family: 'Lora', serif;
 }
 
-ul :hover{
+.top_menu :hover{
     background-color: darksalmon;
 }
 
@@ -44,6 +45,34 @@ nav {
 .form-contact p {
     margin: 10px 0 10px 0;
 }
+
 .form-contact input[type=submit], textarea {
     font-size: 16px;
+}
+
+
+ul {
+    text-align: left;
+    list-style: none; 
+}
+
+li {
+    padding: 1em;
+    margin: 1px;
+    border: solid;
+    border-color: black;
+}
+
+.form_items{
+    display: block;
+    margin: 10px;
+}
+
+textarea {
+    height: 200px;
+    width: 600px;
+}
+
+#link_to_more{
+    text-align: left;
 }

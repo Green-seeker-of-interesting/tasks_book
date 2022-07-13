@@ -1,7 +1,7 @@
 from flask_script import Shell, Manager
 
 from app import app, db
-
+import api
 
 manager = Manager(app)
 

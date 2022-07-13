@@ -1,6 +1,3 @@
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-
 from app import db
 
 
@@ -9,9 +6,13 @@ class task(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     content = db.Column(db.Text(), nullable=False)
-    created_on = db.Column(db.DateTime(), default=datetime.utcnow)
-    dead_line = db.Column(db.Date(), nullable=False)
-    is_сompleted = db.Column(db.Boolean(), default=False)
+
+    def get_value_task(self):
+        out = {
+            "title" : self.title,
+            "content" : self.content
+        }
+        return out
 
     def __repr__(self):
-	    return "<{}:{}>".format(self.id,  self.title[:10])
+	    return str(self.get_value_task())
