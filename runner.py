@@ -1,13 +1,13 @@
 from flask_script import Shell, Manager
 
-from app import app, db
+from app import app, db, migrate
 import api
 
 manager = Manager(app)
 
 
 def make_shell_context():
-    return dict(app=app, db=db)
+    return dict(app=app, db=db, migrate=migrate)
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
 

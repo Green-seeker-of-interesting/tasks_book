@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+<h3>Вы уже вошли</h3>
+<a href="{{url_for('index')}}"> На главную </a>
+<br><hr>
+<a href="{{url_for('logout')}}"> Выйти </a>
+{% else %}
+{{ super() }}
+<form action="/login" method="post" class="form-contact">
+<p><label>Email: </label> <input type="text" name="email" value="" requied />
+<p><label>Пароль: </label> <input type="password" name="psw" value="" requied />
+<p><input type="checkbox" name="remainme" /> Запомнить меня
+<p><input type="submit" value="Войти" />
+<p><a href="{{url_for('register')}}">Регистрация</a>
+</form>
+{% endif %}
+
+{% endblock %}

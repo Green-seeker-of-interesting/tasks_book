@@ -2,13 +2,13 @@ from flask import request
 from flask_restful import Resource
 
 from app import db
-from app.models import task
+from app.models import Task
 
 
 class task_api(Resource):
 
     def get(self):
-        data_from_db = db.session.query(task).all()
+        data_from_db = db.session.query(Task).all()
         out = {}
         
         for item in data_from_db:
@@ -20,7 +20,7 @@ class task_api(Resource):
     def post(self):
         
         data_from_request = request.get_json()
-        task_new = task(
+        task_new = Task(
             title = data_from_request["title"],
             content = data_from_request["content"]
             )        
@@ -35,7 +35,7 @@ class task_api(Resource):
 
 
     def put(self):
-        ts_from_db =  db.session.query(task).get(int(request.args.get("id")))
+        ts_from_db =  db.session.query(Task).get(int(request.args.get("id")))
         data_from_request = request.get_json()
 
         if ts_from_db:
@@ -55,7 +55,7 @@ class task_api(Resource):
 
 
     def delete(self):
-        ts_from_db =  db.session.query(task).get(int(request.args.get("id")))
+        ts_from_db =  db.session.query(Task).get(int(request.args.get("id")))
                 
         if ts_from_db:
             db.session.delete(ts_from_db)
