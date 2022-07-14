@@ -71,7 +71,6 @@ def login():
     if request.method == "POST":
         user_logining = db.session.query(User).filter(User.email == request.form['email']).first()
         if user_logining:
-            pass
             if user_logining.chek_pasword(request.form["psw"]):
                 login_user(user_logining)
         else:
@@ -87,15 +86,13 @@ def login():
 
 @app.route("/register/",  methods=["GET", "POST"])
 def register():
-
     if request.method == "POST":
         n_user = User(
             name = request.form['name'],
             email = request.form['email'],
             online = False
         )
-
-        n_user.set_password(request.form["pws"])
+        n_user.set_password(request.form["psw"])
 
         db.session.add(n_user)
         db.session.commit()

@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
     psw = db.Column(db.String(255), nullable=False)
     online = db.Column(db.Boolean(), nullable=False, default=False)
     
-    prodject = db.relationship('Prodject', backref='author')
+    prodject = db.relationship('Prodject', backref='theAuthor')
     tasks = db.relationship('Task', backref='theAuthor')
 
     def set_password(self, pas:str):
@@ -37,7 +37,7 @@ class Prodject(db.Model):
     name = db.Column(db.String(255), nullable=False)
 
     author = db.Column(db.Integer(),db.ForeignKey('User.id'))
-    tasks = db.relationship('Task', backref='prodject')
+    tasks = db.relationship('Task', backref='theProdject')
 
 
 class Task(db.Model):
