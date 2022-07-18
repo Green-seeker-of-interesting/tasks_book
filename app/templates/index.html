@@ -2,31 +2,52 @@
 
 {% block content %}
 
-<h1> more information </h1>
+<div class="leftcol">
+<!-- Менюшка проектов -->
+    
+    <table class="prodject_list" border="1">
+        <tr>
+            <th>Список проектов</th>
+        </tr>
 
+        {% for key in prodjects.keys() %}
+            <tr><td>
+                <a href="/prodject/{{ key }}/"><div class="prodject_list_item">
+                    {{ prodjects[key] }}
+                </div></a>
+            </td></tr>
+        {% endfor %}
 
+    </table>
 
-{% if current_user.is_authenticated %}
-<h3>Привет {{current_user.name}}</h3>
-{% else %}
-<h3> Залогинься плиз</h3>
-{% endif %}
-
-
-
-{% if all_task %}
-<ul>
-{% for task in all_task %}
-    <li class="task_item" >
-    <h5>{{ task.title }} </h5>
+    <br>
     <hr>
-    <p> {{ task.content }} </p>
-    <div id="link_to_more" ><a href="post/{{ task.id }}" class="a_more_info" > more info </a></div>
-    </li>
-{% endfor %}
-</ul>
-{% else %}
-<h4>Нет записей</h4>
-{% endif %}
+    <br>
+
+    <a href="{{ url_for('new_prodject') }}">
+    <div class="new_prodject_but">
+        Новый проект
+    </div>
+    </a>
+
+    <br>
+    <hr>
+    <br>
+
+    <a href="{{ url_for('logout') }}">
+    <div class="new_prodject_but">
+        Выход
+    </div>
+    </a>
+    
+</div>
+
+<div class="rightcol">
+    {% block workspace %}
+    
+
+    {% endblock %}
+</div>
+
 
 {% endblock %}

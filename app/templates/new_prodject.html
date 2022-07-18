@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+
+{% block workspace %}
+<form action="" method="post" class="form_new_project">  
+    {{ form.hidden_tag() }}
+    <div>{{ form.name.label() }}</div>
+    <div>{{ form.name() }}</div> 
+    <div>{{ form.submit() }}</div>
+</form>
+{% endblock %}

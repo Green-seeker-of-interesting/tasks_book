@@ -1,6 +1,7 @@
 from flask_script import Shell, Manager
 
-from app import app, db, migrate
+from app import app
+from logic import db, migrate
 import api
 
 manager = Manager(app)

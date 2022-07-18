@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app import db
+from logic import db
 
 
 class User(db.Model, UserMixin):
@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False)
     psw = db.Column(db.String(255), nullable=False)
-    online = db.Column(db.Boolean(), nullable=False, default=False)
+    online = db.Column(db.Boolean(), nullable=False, default=False)# Это поле бесполезно
     
     prodject = db.relationship('Prodject', backref='theAuthor')
     tasks = db.relationship('Task', backref='theAuthor')
@@ -22,13 +22,12 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.psw, pas)
 
     def __repr__(self):
-	    return "id - {id} \n name {name} \n email {email}".format(
+	    return "id - {id} \n name {name} \n email {email} \n prodject {prj}".format(
             id = self.id,
             name = self.name,
-            email = self.email
+            email = self.email,
+            prj = self.prodject
         )
-
-
 
 
 class Prodject(db.Model):
@@ -53,7 +52,8 @@ class Task(db.Model):
     def get_value_task(self):
         out = {
             "title" : self.title,
-            "content" : self.content
+            "content" : self.content,
+            "authot" : self.author,
         }
         return out
 

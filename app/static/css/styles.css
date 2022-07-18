@@ -1,40 +1,7 @@
 
-.block_content {
-    /* background-color: lawngreen; */
-    text-align: center;
-    margin-left: 10%;
-    margin-right: 10%;
-}
-
-.menu_item {
-    display: inline;
-    /* background-color: blue; */
-    padding: 1em;
-    border: solid;
-    border-color: black;
-    margin: 1px;
-}
-
-.top_menu{
-    list-style: none; 
-    margin: 0; 
-    padding-left: 0; 
-}
-
-a {
-    text-decoration: none;
-    font-family: 'Lora', serif;
-}
-
-.top_menu :hover{
-    background-color: darksalmon;
-}
-
-nav {
-    display: block;
-    width: 660px;
-    margin: 0 0 30px;
-    font-size: 20px;
+body{
+    padding: 0;
+    margin: 0;
 }
 
 .form-contact label {
@@ -51,28 +18,69 @@ nav {
 }
 
 
-ul {
-    text-align: left;
-    list-style: none; 
-}
-
-li {
-    padding: 1em;
-    margin: 1px;
-    border: solid;
-    border-color: black;
-}
-
 .form_items{
     display: block;
     margin: 10px;
 }
 
-textarea {
-    height: 200px;
-    width: 600px;
+.art_form{
+    text-align: center;
+    margin-top: 10%;
+    margin-left: 30%;
+    padding: 10px;
+    width: 40%;
+    background-color: #F0FFFF;
+    border-radius: 10px;
+    border: 2px solid rgb(0, 0, 0);
 }
 
-#link_to_more{
-    text-align: left;
+.login_form_item{
+    padding: 10px;
+}
+
+/* Описнаие структуры страницы */
+
+.leftcol { /* Левая колонка */
+    float: left; /* Обтекание справа */
+    width: 200px; /* Ширина колонки */
+    height: 1000px;
+    background-color: #FFFAFA;
+    border-right: 2px solid black;
+   }
+
+.rightcol{
+    width: 100%; /* Ширина колонки */
+    height: 1000px;
+    background-color: #F0FFFF;
+}
+
+.new_prodject_but{
+    font-size: 20px;
+    background-color: #FFFAFA;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 2px;
+    padding: 10px;
+    text-align: center;
+    border: 2px solid black;
+}
+
+.new_prodject_but:hover{
+    background-color: #F0FFFF;
+}
+
+a { 
+    text-decoration: none; 
+    color: black;
+   } 
+
+
+.prodject_list{
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+}
+
+.prodject_list_item:hover{
+    background-color: #F0FFFF;
 }

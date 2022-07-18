@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+{% block workspace %}
+    <br>
+    <h3>Задачи проекта</h3>
+
+    {% if tasks %}
+        <h1> всё ок </h1>
+    {% else %}
+        <h1> Записей нет </h1>
+    {% endif %}
+
+{% endblock %}

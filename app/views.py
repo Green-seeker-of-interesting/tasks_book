@@ -1,106 +1,62 @@
 from flask import render_template, flash, request, redirect, url_for
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, logout_user, current_user
 
-from app import app, db
-from app.models import Task, User, Prodject
-from app.forms import tasksForm
-
-
-MAIN_MENU_LIST = [
-    {"name" : "main_page", "url" : "/"},
-    #{"name" : "all_data", "url" : "/all_data/"},
-    {"name" : "forms", "url" : "/forms/"},
-    {"name" : "login", "url" : "/login/"},
-]
+from app import app
+from app.forms import LoginForm, RegistrForm, CreateProjectFrom
+from logic import db 
+from logic.user_worker import user_login_worker, user_registr_worker
+from logic.prodject_worker import create_prodject, get_prodject_array, get_task_array
 
 
 @app.route("/")
+@login_required
 def index():
-    data_from_db = db.session.query(Task).all()
-
     return render_template(
         "index.html",
         title = "Main",
-        menu = MAIN_MENU_LIST,
-        all_task = data_from_db
+        prodjects = get_prodject_array(),
         )
-
-
-@app.route("/forms/", methods=["GET","POST"])
-@login_required
-def form_for_task():
-
-    form = tasksForm()
-
-    if request.method == "POST":
-        title = request.form.get("title")
-        content = request.form.get("content")
-
-        task_new = Task(
-            title = title,
-            content = content
-            )        
-
-        db.session.add(task_new)
-        db.session.commit()
-        flash("Всё ОК")
-        return redirect(url_for("form_for_task"))
-        
-    
-    return render_template(
-        "form.html",
-        menu = MAIN_MENU_LIST,
-        form = form,
-    )
-
-
-@app.route("/post/<int:task_id>")
-def one_task(task_id):
-    task_data =  db.session.query(Task).get(int(task_id))
-    
-    return render_template(
-        "one_task.html",
-        menu = MAIN_MENU_LIST,
-        task=task_data
-    )
 
 
 @app.route("/login/", methods=["GET", "POST"])
 def login():
 
-    if request.method == "POST":
-        user_logining = db.session.query(User).filter(User.email == request.form['email']).first()
-        if user_logining:
-            if user_logining.chek_pasword(request.form["psw"]):
-                login_user(user_logining)
-        else:
-            flash("Нет такого мыла")
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
 
+    form = LoginForm()
+    if request.method == "POST" and form.is_submitted():
+        if user_login_worker(email=form.email.data, psw=form.psw.data):
+            return redirect(url_for("index"))
 
 
     return render_template(
-        "login.html",
-        menu = MAIN_MENU_LIST
-    )
+            "login.html",
+            form = form,
+            )
 
 
 @app.route("/register/",  methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        n_user = User(
-            name = request.form['name'],
-            email = request.form['email'],
-            online = False
-        )
-        n_user.set_password(request.form["psw"])
+    form = RegistrForm()
 
-        db.session.add(n_user)
-        db.session.commit()
-        flash("Всё ок")
+    if request.method == "POST":
+        if form.is_submitted():
+            out_flag =  user_registr_worker(
+                name=form.name.data,
+                email=form.email.data,
+                psw=form.psw.data,
+                psw_cheak=form.psw_chek.data
+            )
+            if out_flag:
+                flash("Всё окей")
+                return redirect(url_for("login"))
+        else:
+            flash("Ой что то не то")
 
     return render_template(
         "register.html",
-        menu = MAIN_MENU_LIST
+        form = form,
     )
 
 
@@ -108,10 +64,33 @@ def register():
 @login_required
 def logout():
     logout_user()
-    flash("You have been logged out.")
+    flash("Войдите в систему снова")
     return redirect(url_for('login'))
 
-# @app.errorhandler(401)
-# def pageNotFount(error):
-#     return redirect(url_for('login'))
-    
+
+
+@app.route('/new_prodject/', methods=["GET", "POST"])
+@login_required
+def new_prodject():
+    form = CreateProjectFrom()
+
+    if request.method == "POST":
+        if create_prodject(form.name.data):
+            return redirect(url_for("index"))
+
+    return render_template(
+        "new_prodject.html",
+        form=form,
+        prodjects = get_prodject_array(),
+    )
+
+
+
+@app.route('/prodject/<int:prodject_id>/', methods=["GET"])
+@login_required
+def prodject(prodject_id):
+    return render_template(
+        "prodject.html",
+        prodjects = get_prodject_array(),
+        tasks = get_task_array(prodject_id=prodject_id),
+    )

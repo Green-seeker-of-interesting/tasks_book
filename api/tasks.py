@@ -1,8 +1,8 @@
 from flask import request
 from flask_restful import Resource
 
-from app import db
-from app.models import Task
+from logic import db
+from logic.models import Task
 
 
 class task_api(Resource):
