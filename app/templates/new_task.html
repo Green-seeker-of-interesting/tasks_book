@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block workspace %}
+   {{ super() }}
+
+   <div class="card" >
+
+    <form action="" method="post" class="form_new_project">  
+        {{ form.hidden_tag() }}
+        <div class="form_prj_item" >{{ form.title.label() }}</div>
+        <div class="form_prj_item input_item" >{{ form.title() }}</div> 
+        <div class="form_prj_item" >{{ form.content.label() }}</div>
+        <div>{{ form.content() }}</div> 
+        <div class="form_prj_item input_submit" >{{ form.submit() }}</div>
+    </form>
+
+   </div>
+{% endblock %}

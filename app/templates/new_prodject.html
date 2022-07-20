@@ -1,10 +1,15 @@
 {% extends 'index.html' %}
 
 {% block workspace %}
-<form action="" method="post" class="form_new_project">  
-    {{ form.hidden_tag() }}
-    <div>{{ form.name.label() }}</div>
-    <div>{{ form.name() }}</div> 
-    <div>{{ form.submit() }}</div>
-</form>
+{{ super() }}
+
+<div class="card">
+    <form action="" method="post" class="form_new_project">  
+        {{ form.hidden_tag() }}
+        <div class="form_prj_item" >{{ form.name.label() }}</div>
+        <div class="form_prj_item input_item" >{{ form.name() }}</div> 
+        <div class="form_prj_item input_submit" >{{ form.submit() }}</div>
+    </form>
+</div>
+
 {% endblock %}

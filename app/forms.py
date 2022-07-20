@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField, PasswordField
+from wtforms import StringField, SubmitField, BooleanField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length
  
 
@@ -19,5 +19,11 @@ class RegistrForm(FlaskForm):
 
 
 class CreateProjectFrom(FlaskForm):
-     name = StringField("Название проекта", validators=[DataRequired(), Length(min=4, max=100)])
+     name = StringField("Название проекта", validators=[DataRequired(), Length(max=250)])
      submit = SubmitField("Создать")
+
+
+class CreateTaskForm(FlaskForm):
+    title = StringField("Задчача ", validators=[DataRequired(), Length(max=250)])
+    content = TextAreaField("Описание", validators=[DataRequired()])
+    submit = SubmitField("Cохранить")

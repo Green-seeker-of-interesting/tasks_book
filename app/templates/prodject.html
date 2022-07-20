@@ -1,13 +1,31 @@
 {% extends 'index.html' %}
 
 {% block workspace %}
-    <br>
-    <h3>Задачи проекта</h3>
+   {{ super() }}
 
     {% if tasks %}
-        <h1> всё ок </h1>
+        {% for key in tasks.keys() %}
+        <div class="card" >
+            <div class="heder_card">
+                <h3 class="card_title">{{ tasks[key][0] }} </h3>    
+            </div>
+
+            <form action="change/{{ key }}">
+                <input type="submit" value="Изменить" class="a_change">
+            </form>
+
+            <form action="change_del/{{ key }}" method="post">
+                <input type="submit" value="Удалить" class="a_change_del">
+            </form>
+
+            <hr>
+            <p> {{ tasks[key][1]|safe}} </p>
+            <!-- {{ tasks[key][1]|safe}} -->
+        </div>
+            
+        {% endfor %}
     {% else %}
-        <h1> Записей нет </h1>
+        <h3>Записей нет</h3>
     {% endif %}
 
 {% endblock %}

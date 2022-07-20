@@ -19,32 +19,42 @@
         {% endfor %}
 
     </table>
-
-    <br>
-    <hr>
-    <br>
-
-    <a href="{{ url_for('new_prodject') }}">
-    <div class="new_prodject_but">
-        Новый проект
-    </div>
-    </a>
-
-    <br>
-    <hr>
-    <br>
-
-    <a href="{{ url_for('logout') }}">
-    <div class="new_prodject_but">
-        Выход
-    </div>
-    </a>
     
 </div>
 
 <div class="rightcol">
     {% block workspace %}
+
+        <a href="{{ url_for('new_prodject') }}">
+            <div class="btn_workspace">
+                Новый проект
+            </div>
+        </a>
     
+
+        {% if flag_prodject %}
+            <a href="new_task">
+                <div class="btn_workspace">
+                    Новая задача
+                </div>
+            </a>
+
+            <a href="del_project">
+                <div class="btn_workspace">
+                    Удалить проект
+                </div>
+            </a>
+
+        {% endif %}
+
+        <a href="{{ url_for('logout') }}">
+            <div class="btn_workspace">
+                Выход
+            </div>
+        </a>
+
+        <br>
+        <br>
 
     {% endblock %}
 </div>

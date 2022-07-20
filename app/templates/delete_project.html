@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+{% block workspace %}
+   {{ super() }}
+
+        <div class="card">
+                <h1>Внимание вы уверены что хотите удалить проект? </h1>
+                <form action="" method="post">
+                        <input type="submit" value="Да" class="a_yes">
+                </form>
+
+                <form action=".">
+                        <input type="submit" value="Нет" class="a_not">
+                </form>
+        </div>
+
+{% endblock %}

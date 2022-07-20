@@ -2,6 +2,7 @@
 body{
     padding: 0;
     margin: 0;
+    background-color: #F0FFFF;
 }
 
 .form-contact label {
@@ -12,11 +13,6 @@ body{
 .form-contact p {
     margin: 10px 0 10px 0;
 }
-
-.form-contact input[type=submit], textarea {
-    font-size: 16px;
-}
-
 
 .form_items{
     display: block;
@@ -29,7 +25,7 @@ body{
     margin-left: 30%;
     padding: 10px;
     width: 40%;
-    background-color: #F0FFFF;
+    background-color: #FFFAFA;
     border-radius: 10px;
     border: 2px solid rgb(0, 0, 0);
 }
@@ -43,30 +39,20 @@ body{
 .leftcol { /* Левая колонка */
     float: left; /* Обтекание справа */
     width: 200px; /* Ширина колонки */
-    height: 1000px;
+    height: auto;
     background-color: #FFFAFA;
-    border-right: 2px solid black;
    }
 
 .rightcol{
-    width: 100%; /* Ширина колонки */
-    height: 1000px;
+    width: auto; /* Ширина колонки */
+    margin-left: 200px;
+    height: auto;
     background-color: #F0FFFF;
+    padding: 15px;
 }
 
-.new_prodject_but{
-    font-size: 20px;
-    background-color: #FFFAFA;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 2px;
-    padding: 10px;
-    text-align: center;
-    border: 2px solid black;
-}
-
-.new_prodject_but:hover{
-    background-color: #F0FFFF;
+.btn_workspace:hover{
+    background-color:  rgb(238, 200, 105);
 }
 
 a { 
@@ -82,5 +68,107 @@ a {
 }
 
 .prodject_list_item:hover{
-    background-color: #F0FFFF;
+    background-color:  rgb(238, 200, 105);
+}
+
+/* Рабочая область */
+
+p{
+    margin: 0;
+}
+
+.heder_workspace{
+    background-color: aqua;
+}
+
+.btn_workspace{
+    width: 200px;
+    display: inline;
+    font-size: 20px;
+    background-color: #FFFAFA;
+    margin: 5px;
+    padding: 10px;
+    text-align: center;
+    border: 2px solid black;
+}
+
+.card{
+    border: 2px solid black;
+    margin: 5px;
+    padding: 5px;
+    background-color: #FFFAFA;
+}
+
+.a_yes {
+    background-color: rgb(164, 214, 78);
+    border: 2px solid black;
+    height: 100px;
+    width: 500px;
+    font-size: 30px;
+}
+
+.a_not {
+    background-color: indianred;
+    border: 2px solid black;
+    height: 100px;
+    width: 500px;
+    font-size: 30px;
+}
+
+form {
+    display: inline;
+}
+
+
+.card_title{
+    margin: 0;
+    float: left; /* Обтекание справа */
+    width: 80%; /* Ширина колонки */
+    height: auto;
+}
+
+
+.a_change {
+    background-color: rgb(164, 214, 78);
+    border: 2px solid black;
+    width: 9%;
+    font-size: 28px;
+    display: inline;
+}
+
+.a_change_del {
+    background-color: indianred;
+    border: 2px solid black;
+    width: 9%;
+    font-size: 28px;
+}
+
+.form_prj_item {
+    font-size: 20px;
+    margin: 2px;
+}
+
+.input_item input {
+    width: 98%;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.input_submit input {
+    width: 20%;
+    height: 50px;
+    border-radius: 20px;
+    margin-left: 40%;
+    font-size: 20px;
+}
+
+.input_submit input:hover{
+    background-color: rgb(238, 200, 105);
+}
+
+textarea{
+    font-size: 20px;
+    width: 98%;
+    resize: none;
+    height: 600px;
 }

@@ -2,10 +2,9 @@ from flask import render_template, flash, request, redirect, url_for
 from flask_login import login_required, logout_user, current_user
 
 from app import app
-from app.forms import LoginForm, RegistrForm, CreateProjectFrom
-from logic import db 
-from logic.user_worker import user_login_worker, user_registr_worker
-from logic.prodject_worker import create_prodject, get_prodject_array, get_task_array
+from app.forms import LoginForm, RegistrForm, CreateProjectFrom, CreateTaskForm
+from logic import user_worker as usw
+from logic import prodject_worker as pjw
 
 
 @app.route("/")
@@ -14,7 +13,7 @@ def index():
     return render_template(
         "index.html",
         title = "Main",
-        prodjects = get_prodject_array(),
+        prodjects = pjw.get_prodject_array(),
         )
 
 
@@ -26,7 +25,7 @@ def login():
 
     form = LoginForm()
     if request.method == "POST" and form.is_submitted():
-        if user_login_worker(email=form.email.data, psw=form.psw.data):
+        if usw.user_login_worker(email=form.email.data, psw=form.psw.data):
             return redirect(url_for("index"))
 
 
@@ -42,7 +41,7 @@ def register():
 
     if request.method == "POST":
         if form.is_submitted():
-            out_flag =  user_registr_worker(
+            out_flag =  usw.user_registr_worker(
                 name=form.name.data,
                 email=form.email.data,
                 psw=form.psw.data,
@@ -75,13 +74,13 @@ def new_prodject():
     form = CreateProjectFrom()
 
     if request.method == "POST":
-        if create_prodject(form.name.data):
+        if pjw.create_prodject(form.name.data):
             return redirect(url_for("index"))
 
     return render_template(
         "new_prodject.html",
         form=form,
-        prodjects = get_prodject_array(),
+        prodjects = pjw.get_prodject_array(),
     )
 
 
@@ -91,6 +90,78 @@ def new_prodject():
 def prodject(prodject_id):
     return render_template(
         "prodject.html",
-        prodjects = get_prodject_array(),
-        tasks = get_task_array(prodject_id=prodject_id),
+        prodjects = pjw.get_prodject_array(),
+        tasks = pjw.get_task_array(prodject_id=prodject_id),
+        flag_prodject = True,
+    )
+
+
+@app.route('/prodject/<int:prodject_id>/new_task', methods=["GET", "POST"])
+@login_required
+def new_task(prodject_id):
+    form = CreateTaskForm()
+
+    if request.method == "POST":
+        pjw.create_task_to_prodject(
+            prodject_id=prodject_id,
+            title=form.title.data,
+            content=form.content.data
+            )
+        return redirect(f"/prodject/{prodject_id}/")
+
+
+
+    return render_template(
+        "new_task.html",
+        prodjects = pjw.get_prodject_array(),
+        flag_prodject = False,
+        form=form,
+    )
+
+
+@app.route('/prodject/<int:prodject_id>/del_project', methods=["GET", "POST"])
+@login_required
+def del_project(prodject_id):
+
+    if request.method == "POST":
+        pjw.del_project_worker(prodject_id=prodject_id)
+        return redirect("/")
+
+    return render_template(
+        "delete_project.html",
+        prodjects = pjw.get_prodject_array(),
+        flag_prodject = False,
+    )
+
+
+@app.route('/prodject/<int:prodject_id>/change_del/<int:task_id>', methods=["POST"])
+@login_required
+def del_task(prodject_id, task_id):
+    pjw.del_task_worker(task_id=task_id)
+    return redirect("..")
+
+
+
+@app.route('/prodject/<int:prodject_id>/change/<int:task_id>', methods=["GET" ,"POST"])
+@login_required
+def change_task(prodject_id, task_id):
+    task = pjw.get_task_by_id(task_id=task_id)
+    form = CreateTaskForm(
+        title = task.title,
+        content = task.content.replace("<br>","\n")
+    )
+
+    if request.method == "POST":
+        pjw.change_task(
+            task=task,
+            title=form.title.data,
+            content=form.content.data,
+            )
+        return redirect("..")
+
+    return render_template(
+        "new_task.html",
+        prodjects = pjw.get_prodject_array(),
+        flag_prodject = True,
+        form=form,
     )
