@@ -1,5 +1,7 @@
+from datetime import datetime
+
 from flask import flash
-from flask_login import login_user
+from flask_login import login_user, current_user
 
 from logic.models import User
 from logic import db
@@ -11,6 +13,7 @@ def user_login_worker(email:str, psw:str, is_remember:bool = False) -> bool:
     if user_logining:
         if user_logining.chek_pasword(psw):
                 login_user(user_logining)
+                user_online_update()
                 return True
         else:
             flash("Неверное имя пользователя или пароль")
@@ -24,7 +27,6 @@ def user_registr_worker(name:str, email:str, psw:str, psw_cheak:str) -> bool:
         nUser = User(
             name=name,
             email=email,
-            online = False
         )
         nUser.set_password(psw)
         db.session.add(nUser)
@@ -33,3 +35,13 @@ def user_registr_worker(name:str, email:str, psw:str, psw_cheak:str) -> bool:
     else:
         flash("Пароли должны совпадать")
         return False
+
+
+def user_online_update():
+    current_user.last_online = datetime.utcnow()
+    db.session.add(current_user)
+    db.session.commit()
+
+
+def get_all_user():
+    return db.session.query(User).all()

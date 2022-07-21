@@ -9,6 +9,12 @@
         {{ form.hidden_tag() }}
         <div class="form_prj_item" >{{ form.title.label() }}</div>
         <div class="form_prj_item input_item" >{{ form.title() }}</div> 
+
+        <div class="form_prj_item" >{{ form.priority.label() }}</div>
+        <div class="form_prj_item" >{{ form.priority() }}</div>
+        <div class="form_prj_item" >{{ form.deadline.label() }}</div>
+        <div class="form_prj_item" >{{ form.deadline() }}</div>
+
         <div class="form_prj_item" >{{ form.content.label() }}</div>
         <div>{{ form.content() }}</div> 
         <div class="form_prj_item input_submit" >{{ form.submit() }}</div>

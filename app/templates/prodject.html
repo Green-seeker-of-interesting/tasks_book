@@ -7,7 +7,7 @@
         {% for key in tasks.keys() %}
         <div class="card" >
             <div class="heder_card">
-                <h3 class="card_title">{{ tasks[key][0] }} </h3>    
+                <h3 class="card_title">{{ tasks[key]["title"] }} </h3>    
             </div>
 
             <form action="change/{{ key }}">
@@ -19,8 +19,21 @@
             </form>
 
             <hr>
-            <p> {{ tasks[key][1]|safe}} </p>
-            <!-- {{ tasks[key][1]|safe}} -->
+            <p> {{ tasks[key]["content"]|safe}} </p>
+            <hr>
+            <div class="card_dop_info">
+                <ul>
+                    <li>автор {{ tasks[key]["authot"] }}</li>
+                    <li>создано {{ tasks[key]["created_on"] }}</li>
+                    <li>обновлено {{ tasks[key]["updated_on"] }}</li>
+                    <li>deadline {{ tasks[key]["deadline"] }}</li>
+                </ul>
+
+
+            </div>
+
+
+
         </div>
             
         {% endfor %}

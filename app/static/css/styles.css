@@ -172,3 +172,21 @@ textarea{
     resize: none;
     height: 600px;
 }
+
+
+.btm_good {
+    background-color: rgb(164, 214, 78);
+    border: 2px solid black;
+    font-size: 28px;
+}
+
+.btn_bed {
+    background-color: indianred;
+    border: 2px solid black;
+    font-size: 28px;
+}
+
+.maneger{
+    font-size: 28px;
+    text-align: center;
+}

@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField, PasswordField, TextAreaField
+from wtforms import StringField, SubmitField, BooleanField, PasswordField, TextAreaField, SelectField, DateField
 from wtforms.validators import DataRequired, Email, Length
  
+from logic import prodject_worker as pjw
 
 class LoginForm(FlaskForm):
     email = StringField("Email: ", validators=[DataRequired(),Email()])
@@ -19,11 +20,15 @@ class RegistrForm(FlaskForm):
 
 
 class CreateProjectFrom(FlaskForm):
-     name = StringField("Название проекта", validators=[DataRequired(), Length(max=250)])
-     submit = SubmitField("Создать")
+    name = StringField("Название проекта", validators=[DataRequired(), Length(max=250)])
+    is_open = BooleanField("Открытый ? ", default = False)
+    category = SelectField('Категория', choices=pjw.get_сategori_list_worker_tuple(), coerce=int)
+    submit = SubmitField("Создать")
 
 
 class CreateTaskForm(FlaskForm):
     title = StringField("Задчача ", validators=[DataRequired(), Length(max=250)])
     content = TextAreaField("Описание", validators=[DataRequired()])
+    deadline = DateField("Срок задачи")
+    priority = SelectField('Категория', choices=pjw.get_priority_list_worker_tuple(), coerce=int)
     submit = SubmitField("Cохранить")

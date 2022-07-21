@@ -20,6 +20,26 @@
 
     </table>
     
+    <br>
+
+
+    <!-- close_prj -->
+    <table class="prodject_list" border="1">
+        <tr>
+            <th>Общие проекты</th>
+        </tr>
+
+        {% for key in close_prj.keys() %}
+            <tr><td>
+                <a href="/prodject/{{ key }}/"><div class="prodject_list_item">
+                    {{ close_prj[key] }}
+                </div></a>
+            </td></tr>
+        {% endfor %}
+
+    </table>
+
+
 </div>
 
 <div class="rightcol">
@@ -46,6 +66,15 @@
             </a>
 
         {% endif %}
+
+        {% if flag_open_prodject %}
+            <a href="author_meneger">
+                <div class="btn_workspace">
+                    Добавить автора
+                </div>
+            </a>
+        {% endif %}
+
 
         <a href="{{ url_for('logout') }}">
             <div class="btn_workspace">

@@ -7,13 +7,16 @@ from logic import user_worker as usw
 from logic import prodject_worker as pjw
 
 
+
 @app.route("/")
 @login_required
 def index():
+    open_prj, close_prj = pjw.get_prodject_array()
     return render_template(
         "index.html",
         title = "Main",
-        prodjects = pjw.get_prodject_array(),
+        prodjects = open_prj,
+        close_prj = close_prj,
         )
 
 
@@ -74,13 +77,22 @@ def new_prodject():
     form = CreateProjectFrom()
 
     if request.method == "POST":
-        if pjw.create_prodject(form.name.data):
+        out_flag = pjw.create_prodject(
+            name = form.name.data,
+            is_open = form.is_open.data,
+            category_id=form.category.data,
+            )
+
+        if out_flag:
             return redirect(url_for("index"))
+
+    open_prj, close_prj = pjw.get_prodject_array()
 
     return render_template(
         "new_prodject.html",
         form=form,
-        prodjects = pjw.get_prodject_array(),
+        prodjects = open_prj,
+        close_prj = close_prj,
     )
 
 
@@ -88,11 +100,14 @@ def new_prodject():
 @app.route('/prodject/<int:prodject_id>/', methods=["GET"])
 @login_required
 def prodject(prodject_id):
+    open_prj, close_prj = pjw.get_prodject_array()
     return render_template(
         "prodject.html",
-        prodjects = pjw.get_prodject_array(),
+        prodjects = open_prj,
+        close_prj = close_prj,
         tasks = pjw.get_task_array(prodject_id=prodject_id),
         flag_prodject = True,
+        flag_open_prodject = pjw.get_prodject_status(prodject_id),
     )
 
 
@@ -110,10 +125,11 @@ def new_task(prodject_id):
         return redirect(f"/prodject/{prodject_id}/")
 
 
-
+    open_prj, close_prj = pjw.get_prodject_array()
     return render_template(
         "new_task.html",
-        prodjects = pjw.get_prodject_array(),
+        prodjects = open_prj,
+        close_prj = close_prj,
         flag_prodject = False,
         form=form,
     )
@@ -127,9 +143,11 @@ def del_project(prodject_id):
         pjw.del_project_worker(prodject_id=prodject_id)
         return redirect("/")
 
+    open_prj, close_prj = pjw.get_prodject_array()
     return render_template(
         "delete_project.html",
-        prodjects = pjw.get_prodject_array(),
+        prodjects = open_prj,
+        close_prj = close_prj,
         flag_prodject = False,
     )
 
@@ -148,20 +166,61 @@ def change_task(prodject_id, task_id):
     task = pjw.get_task_by_id(task_id=task_id)
     form = CreateTaskForm(
         title = task.title,
-        content = task.content.replace("<br>","\n")
+        content = task.content.replace("<br>","\n"),
+        priority = task.priority,
+        deadline = task.deadline
     )
 
     if request.method == "POST":
         pjw.change_task(
-            task=task,
-            title=form.title.data,
-            content=form.content.data,
+            task = task,
+            title = form.title.data,
+            content = form.content.data,
+            priority = form.priority.data,
+            deadline = form.deadline.data
             )
         return redirect("..")
 
+    open_prj, close_prj = pjw.get_prodject_array()
     return render_template(
         "new_task.html",
-        prodjects = pjw.get_prodject_array(),
+        prodjects = open_prj,
+        close_prj = close_prj,
         flag_prodject = True,
         form=form,
     )
+
+
+@app.route('/prodject/<int:prodject_id>/author_meneger', methods=["GET" ,"POST"])
+@login_required
+def author_meneger(prodject_id):
+    users = usw.get_all_user()
+    open_prj, close_prj = pjw.get_prodject_array()
+    return render_template(
+        "author_meneger.html",
+        prodjects = open_prj,
+        close_prj = close_prj,
+        flag_prodject = True,
+        users = users,
+        prodject_id = prodject_id,
+    )
+
+
+@app.route('/prodject/<int:prodject_id>/add/<int:user_id>', methods=["POST"])
+@login_required
+def add_author(prodject_id, user_id):
+    pjw.add_author_to_prodject(
+        prodject_id=prodject_id, 
+        user_id=user_id
+        )
+    return redirect("..")
+
+
+@app.route('/prodject/<int:prodject_id>/del/<int:user_id>', methods=["POST"])
+@login_required
+def del_author(prodject_id, user_id):
+    pjw.del_author_to_prodject(
+        prodject_id=prodject_id, 
+        user_id=user_id
+        )
+    return redirect("..")

@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+
+{% block workspace %}
+   {{ super() }}
+
+   <div class="card">
+
+        <h3>Менеджер авторов</h3>
+        <table border="1" class="maneger">
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.num_task }}</td>
+                    <td>
+                        {% if user.chek_is_author(prodject_id) %}
+                        <form action="del/{{ user.id }}" method="post">
+                            <input type="submit" value="Удалить" class="btn_bed">
+                        </form>
+                        {% else %}
+                        <form action="add/{{ user.id }}" method="post">
+                            <input type="submit" value="добавить" class="btm_good">
+                        </form>
+                        {% endif %}
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+   </div>
+
+{% endblock %}

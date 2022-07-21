@@ -7,7 +7,14 @@
     <form action="" method="post" class="form_new_project">  
         {{ form.hidden_tag() }}
         <div class="form_prj_item" >{{ form.name.label() }}</div>
-        <div class="form_prj_item input_item" >{{ form.name() }}</div> 
+        <div class="form_prj_item input_item" >{{ form.name() }}</div>
+
+        <div class="form_prj_item" >{{ form.is_open.label() }}</div>
+        <div class="form_prj_item" >{{ form.is_open() }}</div>
+
+        <div class="form_prj_item" >{{ form.category.label() }}</div>
+        <div class="form_prj_item" >{{ form.category() }}</div>
+
         <div class="form_prj_item input_submit" >{{ form.submit() }}</div>
     </form>
 </div>
