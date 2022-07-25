@@ -6,6 +6,9 @@
    <div class="card">
 
         <h3>Менеджер авторов</h3>
+        {% for cat, msg in get_flashed_messages(True) %}
+            <div class="flash {{cat}}">{{msg}}</div>
+        {% endfor %}
         <table border="1" class="maneger">
             {% for user in users %}
                 <tr>

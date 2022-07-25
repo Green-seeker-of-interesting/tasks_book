@@ -1,3 +1,4 @@
+from flask import flash
 from flask_login import current_user
 
 from logic.models import Prodject, Task, Category, Priority, UserToPridject
@@ -44,7 +45,7 @@ def get_prodject_array()-> dict:
     return out_open, out_close
 
 
-def get_task_array(prodject_id)-> dict:
+def get_task_array(prodject_id:int)-> dict:
     pjc = db.session.query(Prodject).filter(Prodject.id == prodject_id).first()
     out = dict()
     if pjc:
@@ -54,16 +55,16 @@ def get_task_array(prodject_id)-> dict:
             })
     return out
 
-def get_prodject_status(prodject_id)-> dict:
+def get_prodject_status(prodject_id:int)-> dict:
     pjc = db.session.query(Prodject).filter(Prodject.id == prodject_id).first()
     return pjc.is_open
 
 
-def get_task_by_id(task_id):
+def get_task_by_id(task_id:int):
     return db.session.query(Task).filter(Task.id == task_id).first()
 
 
-def create_task_to_prodject(prodject_id, title, content)->bool:
+def create_task_to_prodject(prodject_id:int, title:str, content:str)->bool:
     
     content = content.replace("\n", "<br>")
     
@@ -80,7 +81,7 @@ def create_task_to_prodject(prodject_id, title, content)->bool:
     return True
 
 
-def change_task(task, title, content, priority, deadline)->bool:
+def change_task(task:str, title:str, content:str, priority:str, deadline:str)->bool:
     
     content = content.replace("\n", "<br>")
     task.content = content
@@ -95,7 +96,7 @@ def change_task(task, title, content, priority, deadline)->bool:
     return True
 
 
-def del_project_worker(prodject_id):
+def del_project_worker(prodject_id:int):
     pjc = db.session.query(Prodject).filter(Prodject.id == prodject_id).first()
     for task in pjc.tasks:
         db.session.delete(task)
@@ -125,7 +126,7 @@ def get_priority_list_worker_tuple() ->list:
     return [(item.id , item.name) for item in all_priority] 
 
 
-def add_author_to_prodject(prodject_id, user_id):
+def add_author_to_prodject(prodject_id:int, user_id:int):
     nUtP = UserToPridject(
         author = user_id,
         prodject = prodject_id,
@@ -134,9 +135,20 @@ def add_author_to_prodject(prodject_id, user_id):
     db.session.add(nUtP)
     db.session.commit()
 
-def del_author_to_prodject(prodject_id, user_id):
-    value = db.session.query(UserToPridject).filter(UserToPridject.prodject == prodject_id).all()
-    value = value.filter(UserToPridject.author == user_id).first()
 
-    db.session.delete(value)
-    db.session.commit()
+def get_prodjecr_by_id(prodject_id: int):
+    return db.session.query(Prodject).filter(Prodject.id == prodject_id).first()
+
+
+def del_author_to_prodject(prodject_id: int, user_id: int) -> bool:
+    prj = get_prodjecr_by_id(prodject_id=prodject_id)
+    if prj.creator == user_id:
+        flash("нельзя удалить создателя")
+        return False
+    else:
+        value = db.session.query(UserToPridject).filter(UserToPridject.prodject == prodject_id)
+        value = value.filter(UserToPridject.author == user_id).first()
+
+        db.session.delete(value)
+        db.session.commit()
+        return True

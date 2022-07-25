@@ -40,7 +40,6 @@ class User(db.Model, UserMixin):
             if item.prodject == prodject_id:
                 out = True
               
-        
         for item in self.create_prodject:
             if item.id == prodject_id:
                 out = True
@@ -76,6 +75,14 @@ class Prodject(db.Model):
 
     author = db.relationship('UserToPridject', backref='theProdject') 
     tasks = db.relationship('Task', backref='theProdject')
+
+    def is_author(self, user_id:int):
+        if user_id == self.creator:
+            return True
+        for item in self.author:
+            if item.author == user_id:
+                return True
+        return False
 
 
 class Category(db.Model):

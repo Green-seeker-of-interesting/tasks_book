@@ -1,12 +1,12 @@
 from flask import render_template, flash, request, redirect, url_for
 from flask_login import login_required, logout_user, current_user
+from flask_restful import abort
 
 from app import app
 from app.forms import LoginForm, RegistrForm, CreateProjectFrom, CreateTaskForm
 from logic import user_worker as usw
 from logic import prodject_worker as pjw
-
-
+from logic.decorators import access_check
 
 @app.route("/")
 @login_required
@@ -99,6 +99,7 @@ def new_prodject():
 
 @app.route('/prodject/<int:prodject_id>/', methods=["GET"])
 @login_required
+@access_check
 def prodject(prodject_id):
     open_prj, close_prj = pjw.get_prodject_array()
     return render_template(
@@ -111,8 +112,10 @@ def prodject(prodject_id):
     )
 
 
+
 @app.route('/prodject/<int:prodject_id>/new_task', methods=["GET", "POST"])
 @login_required
+@access_check
 def new_task(prodject_id):
     form = CreateTaskForm()
 
@@ -137,6 +140,7 @@ def new_task(prodject_id):
 
 @app.route('/prodject/<int:prodject_id>/del_project', methods=["GET", "POST"])
 @login_required
+@access_check
 def del_project(prodject_id):
 
     if request.method == "POST":
@@ -154,6 +158,7 @@ def del_project(prodject_id):
 
 @app.route('/prodject/<int:prodject_id>/change_del/<int:task_id>', methods=["POST"])
 @login_required
+@access_check
 def del_task(prodject_id, task_id):
     pjw.del_task_worker(task_id=task_id)
     return redirect("..")
@@ -162,6 +167,7 @@ def del_task(prodject_id, task_id):
 
 @app.route('/prodject/<int:prodject_id>/change/<int:task_id>', methods=["GET" ,"POST"])
 @login_required
+@access_check
 def change_task(prodject_id, task_id):
     task = pjw.get_task_by_id(task_id=task_id)
     form = CreateTaskForm(
@@ -193,6 +199,7 @@ def change_task(prodject_id, task_id):
 
 @app.route('/prodject/<int:prodject_id>/author_meneger', methods=["GET" ,"POST"])
 @login_required
+@access_check
 def author_meneger(prodject_id):
     users = usw.get_all_user()
     open_prj, close_prj = pjw.get_prodject_array()
@@ -208,19 +215,21 @@ def author_meneger(prodject_id):
 
 @app.route('/prodject/<int:prodject_id>/add/<int:user_id>', methods=["POST"])
 @login_required
+@access_check
 def add_author(prodject_id, user_id):
     pjw.add_author_to_prodject(
         prodject_id=prodject_id, 
         user_id=user_id
         )
-    return redirect("..")
+    return redirect("../author_meneger")
 
 
 @app.route('/prodject/<int:prodject_id>/del/<int:user_id>', methods=["POST"])
 @login_required
+@access_check
 def del_author(prodject_id, user_id):
     pjw.del_author_to_prodject(
         prodject_id=prodject_id, 
         user_id=user_id
         )
-    return redirect("..")
+    return redirect("../author_meneger")
